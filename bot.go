@@ -1,6 +1,7 @@
 package slackbot
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -43,6 +44,26 @@ func DayCount(w http.ResponseWriter, r *http.Request) {
 	if err := json.NewEncoder(w).Encode(message); err != nil {
 		log.Fatalf("json.Marshal: %v", err)
 	}
+}
+
+func DayCountSchedule(w http.ResponseWriter, r *http.Request) {
+	if r.Method != "GET" {
+		http.Error(w, "Only GET requests are accepted", 405)
+	}
+
+	message := formatMessage()
+	requestData, _ := json.Marshal(message)
+	webhook := r.URL.Query()["webhook"][0]
+	_, err := http.Post(webhook, "application/json", bytes.NewBuffer(requestData))
+	if err != nil {
+		log.Printf("got error with webhook %s", err)
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(500)
+		http.Error(w, err.Error(), 500)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	fmt.Fprint(w, "{}")
 }
 
 func verifyWebHook(form url.Values) error {
