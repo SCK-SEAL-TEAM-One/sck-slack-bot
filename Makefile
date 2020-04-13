@@ -1,3 +1,9 @@
+all:
+	unit deploy
+	
+unit: 
+	go test ./...
+
 deploy:
 	gcloud functions deploy DayCount --runtime go111 --trigger-http --env-vars-file .env.yml
 	gcloud functions deploy DayCountSchedule --runtime go111 --trigger-http --env-vars-file .env.yml

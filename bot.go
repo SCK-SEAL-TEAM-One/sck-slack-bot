@@ -123,7 +123,7 @@ func dateMessage(t time.Time) string {
 
 func yearMonthDayCounter(launchedDate, now time.Time) string {
 	var output string
-	launchedDate = launchedDate.AddDate(0, 0, -1)
+	launchedDate = launchedDate.AddDate(0, 0, -2)
 	year := now.Year() - launchedDate.Year()
 	month := int(now.Month() - launchedDate.Month())
 	if int(month) < 0 {
@@ -148,5 +148,5 @@ func yearMonthDayCounter(launchedDate, now time.Time) string {
 }
 
 func message(company Company, t time.Time) string {
-	return fmt.Sprintf("%s %s", company.Title, yearMonthDayCounter(company.GetDate(), t))
+	return fmt.Sprintf("%s %s %s", company.Title, dateMessage(company.GetDate()), yearMonthDayCounter(company.GetDate(), t))
 }
