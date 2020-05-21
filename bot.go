@@ -107,9 +107,10 @@ func formatMessage() *Message {
 	for _, company := range companies {
 		attachments = append(attachments, attachment{Color: "#d6334b", Text: message(company, time.Now())})
 	}
+	loc, _ := time.LoadLocation("Asia/Bangkok")
 	return &Message{
 		ResponseType: "in_channel",
-		Text:         dateMessage(time.Now()),
+		Text:         dateMessage(time.Now().In(loc)),
 		Attachments:  attachments,
 	}
 }
